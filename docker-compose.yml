@@ -4,40 +4,41 @@ services:
     dvwa:
         build: ./image_php
         ports:
-            - "8080:80"
+            - "8082:80"
         volumes:
             - ./source:/var/www/html/
         links:
-            - db
+            - db2
         depends_on:
-            - db
-    db:
+            - db2
+    db2:
         image: mysql
-        container_name: db
+        container_name: db2
         ports:
-            - "3306:3306"
+            - "3307:3306"
         command: --default-authentication-plugin=mysql_native_password
         environment: 
             MARIADB_ROOT_PASSWORD: p@ssw0rd
-            MYSQL_DATABASE: dvwa
-            MYSQL_USER: dvwa
+            MYSQL_DATABASE: lms
+            MYSQL_USER: lms
             MYSQL_ROOT_PASSWORD: p@ssw0rd
             MYSQL_PASSWORD: p@ssw0rd
         volumes:
-            - dvwa_db:/var/lib/mysql
-    phpmyadmin:
-        container_name: phpmyadmin
+            - lms_db:/var/lib/mysql
+    phpmyadmin-lms:
+        container_name: phpmyadmin-lms
         image: phpmyadmin/phpmyadmin
         ports:
-            - "8081:80"
+            - "8083:80"
         environment:
-            MYSQL_USER: dvwa
+            MYSQL_USER: lms
             MYSQL_ROOT_PASSWORD: p@ssw0rd
             MYSQL_PASSWORD: p@ssw0rd
-            PMA_HOST: db
+            # database host port
+            PMA_HOST: db2
             PMA_USER: root
             PMA_PASSWORD: p@ssw0rd
 volumes:
-    dvwa_db:
+    lms_db:
 networks:
     default:

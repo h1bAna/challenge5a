@@ -15,7 +15,7 @@ $DBMS = 'MySQL';
 # If you are using MariaDB then you cannot use root, you must use create a dedicated DVWA user.
 #   See README.md for more information on this.
 $_LMS = array();
-$_LMS[ 'db_server' ]   = 'db';
+$_LMS[ 'db_server' ]   = 'db2';
 $_LMS[ 'db_database' ] = 'lms';
 $_LMS[ 'db_user' ]     = 'lms';
 $_LMS[ 'db_password' ] = 'p@ssw0rd';

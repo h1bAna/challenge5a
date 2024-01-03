@@ -1,9 +1,9 @@
 <?php
 
 define( 'LMS_WEB_PAGE_TO_ROOT', '' );
-require_once LMS_WEB_PAGE_TO_ROOT . 'resources/includes/lmsPage.inc.php';
+require_once LMS_WEB_PAGE_TO_ROOT . 'resources/includes/lms.inc.php';
 
-dvwaDatabaseConnect();
+lmsDatabaseConnect();
 
 if( isset( $_POST[ 'Login' ] ) ) {
 	// Anti-CSRF
@@ -30,13 +30,13 @@ if( isset( $_POST[ 'Login' ] ) ) {
 	$query  = "SELECT * FROM `users` WHERE user='$user' AND password='$pass';";
 	$result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br /> Something wrong with database.</pre>' );
 	if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
-		dvwaMessagePush( "You have logged in as '{$user}'" );
+		lmsMessagePush( "You have logged in as '{$user}'" );
 		lmsLogin( $user );
 		lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'index.php' );
 	}
 
 	// Login failed
-	dvwaMessagePush( 'Login failed' );
+	lmsMessagePush( 'Login failed' );
 	lmsRedirect( 'login.php' );
 }
 
@@ -107,15 +107,11 @@ echo "<!DOCTYPE html>
 	<br />
 	<br />
 	<br />
-	<br />
-	<br />
-	<br />
-    <br />
 	</div > <!--<div id=\"content\">-->
 
 	<div id=\"footer\">
     <p style=\"font-size:13px;\" >Learning management system!</p>
-	<p>" . dvwaExternalLinkUrlGet( 'https://github.com/digininja/DVWA/', 'Damn Vulnerable Web Application (DVWA)' ) . "</p>
+	<p>" . dvwaExternalLinkUrlGet( 'https://github.com/h1bAna/challenge5a', 'Learning management system (LMS)' ) . "</p>
 
 	</div> <!--<div id=\"footer\"> -->
 
