@@ -5,6 +5,13 @@ require_once LMS_WEB_PAGE_TO_ROOT . 'resources/includes/lms.inc.php';
 
 lmsDatabaseConnect();
 
+// check if the user is already logged in
+
+if( lmsIsLoggedIn() ) {
+	lmsRedirect( 'index.php' );
+}
+
+
 if( isset( $_POST[ 'Login' ] ) ) {
 	// Anti-CSRF
 	if (array_key_exists ("session_token", $_SESSION)) {
@@ -27,11 +34,14 @@ if( isset( $_POST[ 'Login' ] ) ) {
     $pass = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
     $pass = md5( $pass );
 
-	$query  = "SELECT * FROM `users` WHERE user='$user' AND password='$pass';";
+	$query  = "SELECT * FROM `users` WHERE username='$user' AND password='$pass';";
 	$result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br /> Something wrong with database.</pre>' );
 	if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
+		// get user role from result
+		$row = mysqli_fetch_assoc( $result );
+		$user_role = $row[ 'role' ];
 		lmsMessagePush( "You have logged in as '{$user}'" );
-		lmsLogin( $user );
+		lmsLogin( $user, $user_role );
 		lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'index.php' );
 	}
 

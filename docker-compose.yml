@@ -25,6 +25,7 @@ services:
             MYSQL_PASSWORD: p@ssw0rd
         volumes:
             - lms_db:/var/lib/mysql
+            - ./init:/docker-entrypoint-initdb.d
     phpmyadmin-lms:
         container_name: phpmyadmin-lms
         image: phpmyadmin/phpmyadmin

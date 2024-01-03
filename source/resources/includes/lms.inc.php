@@ -13,7 +13,6 @@ if (!file_exists(LMS_WEB_PAGE_TO_ROOT . 'config/config.inc.php')) {
 
 // Include configs
 require_once LMS_WEB_PAGE_TO_ROOT . 'config/config.inc.php';
-// require_once( 'dvwaPhpIds.inc.php' );
 
 // Declare the $html variable
 if( !isset( $html ) ) {
@@ -38,9 +37,10 @@ function lmsPageStartup( $pActions ) {
 	}
 }
 
-function lmsLogin( $pUsername ) {
+function lmsLogin( $pUsername, $pRole ) {
 	$lmsSession =& lmsSessionGrab();
 	$lmsSession[ 'username' ] = $pUsername;
+	$lmsSession[ 'role' ] = $pRole;
 }
 
 
@@ -49,6 +49,10 @@ function lmsIsLoggedIn() {
 	return isset( $lmsSession[ 'username' ] );
 }
 
+function lmsGetUserRole() {
+	$lmsSession =& lmsSessionGrab();
+	return ( isset( $lmsSession[ 'role' ] ) ? $lmsSession[ 'role' ] : '') ;
+}
 
 function lmsLogout() {
 	$lmsSession =& lmsSessionGrab();
@@ -71,29 +75,11 @@ function &lmsPageNewGrab() {
 	$returnArray = array(
 		'title'           => 'LMS',
 		'title_separator' => ' :: ',
+		'user_role'       => '',
 		'body'            => '',
 		'page_id'         => '',
-		'help_button'     => '',
-		'source_button'   => '',
 	);
 	return $returnArray;
-}
-
-
-function lmsSecurityLevelGet() {
-	return isset( $_COOKIE[ 'security' ] ) ? $_COOKIE[ 'security' ] : 'impossible';
-}
-
-
-function lmsSecurityLevelSet( $pSecurityLevel ) {
-	if( $pSecurityLevel == 'impossible' ) {
-		$httponly = true;
-	}
-	else {
-		$httponly = false;
-	}
-	setcookie( session_name(), session_id(), null, '/', null, null, $httponly );
-	setcookie( 'security', $pSecurityLevel, NULL, NULL, NULL, NULL, $httponly );
 }
 
 
@@ -223,29 +209,111 @@ function tokenField() {  # Return a field for the (CSRF) token
 }
 // -- END (Token functions)
 
+function lmsHtmlEcho( $pPage ) {
+	$menuBlocks = array();
 
-$phpDisplayErrors = 'PHP function display_errors: <em>' . ( ini_get( 'display_errors' ) ? 'Enabled</em> <i>(Easy Mode!)</i>' : 'Disabled</em>' );                                                  // Verbose error messages (e.g. full path disclosure)
-$phpSafeMode      = 'PHP function safe_mode: <span class="' . ( ini_get( 'safe_mode' ) ? 'failure">Enabled' : 'success">Disabled' ) . '</span>';                                                   // DEPRECATED as of PHP 5.3.0 and REMOVED as of PHP 5.4.0
-$phpMagicQuotes   = 'PHP function magic_quotes_gpc: <span class="' . ( ini_get( 'magic_quotes_gpc' ) ? 'failure">Enabled' : 'success">Disabled' ) . '</span>';                                     // DEPRECATED as of PHP 5.3.0 and REMOVED as of PHP 5.4.0
-$phpURLInclude    = 'PHP function allow_url_include: <span class="' . ( ini_get( 'allow_url_include' ) ? 'success">Enabled' : 'failure">Disabled' ) . '</span>';                                   // RFI
-$phpURLFopen      = 'PHP function allow_url_fopen: <span class="' . ( ini_get( 'allow_url_fopen' ) ? 'success">Enabled' : 'failure">Disabled' ) . '</span>';                                       // RFI
-$phpGD            = 'PHP module gd: <span class="' . ( ( extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ) ? 'success">Installed' : 'failure">Missing - Only an issue if you want to play with captchas' ) . '</span>';                    // File Upload
-$phpMySQL         = 'PHP module mysql: <span class="' . ( ( extension_loaded( 'mysqli' ) && function_exists( 'mysqli_query' ) ) ? 'success">Installed' : 'failure">Missing' ) . '</span>';                // Core DVWA
-$phpPDO           = 'PHP module pdo_mysql: <span class="' . ( extension_loaded( 'pdo_mysql' ) ? 'success">Installed' : 'failure">Missing' ) . '</span>';                // SQLi
-$DVWARecaptcha    = 'reCAPTCHA key: <span class="' . ( ( isset( $_DVWA[ 'recaptcha_public_key' ] ) && $_DVWA[ 'recaptcha_public_key' ] != '' ) ? 'success">' . $_DVWA[ 'recaptcha_public_key' ] : 'failure">Missing' ) . '</span>';
+	$menuBlocks[ 'home' ] = array();
+	
+	if($pPage[ 'user_role'] == "admin"){
+		$menuBlocks[] = array( 'id' => 'home', 'name' => 'Trang chủ', 'url' => '.' );
+		$menuBlocks[] = array( 'id' => 'addStudent', 'name' => 'Thêm sinh viên', 'url' => 'addStudent.php' );
+		$menuBlocks[] = array( 'id' => 'modifyStudent', 'name' => 'Sửa thông tin sinh viên', 'url' => 'modifyStudent.php' );
+		$menuBlocks[] = array( 'id' => 'delStudent', 'name' => 'Xoá sinh viên', 'url' => 'delStudent.php' );
+		$menuBlocks[] = array( 'id' => 'createAssignment', 'name' => 'Thêm bài tập', 'url' => 'addAssignment.php' );
+	}elseif($pPage[ 'user_role'] == "student"){
+		$menuBlocks[] = array( 'id' => 'home', 'name' => 'Trang chủ', 'url' => '.' );
+		$menuBlocks[] = array( 'id' => 'viewAssignment', 'name' => 'Xem bài tập', 'url' => 'viewAssignment.php' );
+	}
 
-$DVWAUploadsWrite = '[User: ' . get_current_user() . '] Writable folder ' . $PHPUploadPath . ': <span class="' . ( is_writable( $PHPUploadPath ) ? 'success">Yes' : 'failure">No' ) . '</span>';                                     // File Upload
-$bakWritable = '[User: ' . get_current_user() . '] Writable folder ' . $PHPCONFIGPath . ': <span class="' . ( is_writable( $PHPCONFIGPath ) ? 'success">Yes' : 'failure">No' ) . '</span>';   // config.php.bak check                                  // File Upload
-$DVWAPHPWrite     = '[User: ' . get_current_user() . '] Writable file ' . $PHPIDSPath . ': <span class="' . ( is_writable( $PHPIDSPath ) ? 'success">Yes' : 'failure">No' ) . '</span>';                                              // PHPIDS
 
-$DVWAOS           = 'Hệ điều hành: <em>' . ( strtoupper( substr (PHP_OS, 0, 3)) === 'WIN' ? 'Windows' : '*nix' ) . '</em>';
-$SERVER_NAME      = 'Web Server SERVER_NAME: <em>' . $_SERVER[ 'SERVER_NAME' ] . '</em>';                                                                                                          // CSRF
+	$menuBlocks[] = array( 'id' => 'selfModify', 'name' => 'Thay đổi thông tin bản thân', 'url' => 'selfModify.php' );
+	$menuBlocks[] = array( 'id' => 'viewUser', 'name' => 'Xem người dùng', 'url' => 'userView.php' );
 
-$MYSQL_USER       = 'Database username: <em>' . $_LMS[ 'db_user' ] . '</em>';
-$MYSQL_PASS       = 'Database password: <em>' . ( ($_LMS[ 'db_password' ] != "" ) ? '******' : '*blank*' ) . '</em>';
-$MYSQL_DB         = 'Database database: <em>' . $_LMS[ 'db_database' ] . '</em>';
-$MYSQL_SERVER     = 'Database host: <em>' . $_LMS[ 'db_server' ] . '</em>';
-$MYSQL_PORT       = 'Database port: <em>' . $_LMS[ 'db_port' ] . '</em>';
+	
+
+
+
+	$menuHtml = '';
+	$user = lmsCurrentUser();
+	foreach( $menuBlocks as $menuItem ) {
+		if( $menuItem[ 'id' ] == '' ) {
+			continue;
+		}
+		$selectedClass = ( $menuItem[ 'id' ] == $pPage[ 'page_id' ] ) ? 'selected' : '';
+		if($menuItem[ 'id' ] == $pPage[ 'page_id' ]){
+			$pageName = $menuItem[ 'name' ];
+		}
+		$fixedUrl = LMS_WEB_PAGE_TO_ROOT.$menuItem[ 'url' ];
+		$menuHtml .= "<li class=\"{$selectedClass}\" ><a class=\"nav-item\" href=\"{$fixedUrl}\">{$menuItem[ 'name' ]}</a></li>";
+	}
+
+
+
+	$messagesHtml = messagesPopAllToHtml();
+	if( $messagesHtml ) {
+		$messagesHtml = "<div class=\"body_padded\">{$messagesHtml}</div>";
+	}
+
+
+	// Send Headers + main HTML code
+	Header( 'Cache-Control: no-cache, must-revalidate');   // HTTP/1.1
+	Header( 'Content-Type: text/html;charset=utf-8' );     // TODO- proper XHTML headers...
+	Header( 'Expires: Tue, 23 Jun 2009 12:00:00 GMT' );    // Date in the past
+
+	echo "<!DOCTYPE html>
+
+<html lang=\"en-GB\">
+
+	<head>
+		<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />
+
+		<title>{$pPage[ 'title' ]}</title>
+
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/css/main.css\" />
+
+		<link rel=\"icon\" type=\"\image/ico\" href=\"" . LMS_WEB_PAGE_TO_ROOT . "favicon.ico\" />
+
+		<script type=\"text/javascript\" src=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/js/dvwaPage.js\"></script>
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/css/styleHeader.css\">
+		<link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap\" rel=\"stylesheet\">
+		<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css\">
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/css/styleMain.css\">
+		<link href=\"https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap\" rel=\"stylesheet\">
+		<link href=\"https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap\" rel=\"stylesheet\">	
+
+	</head>
+
+	<body>
+		<div class =\"web-container\">
+			<div class=\"head\">
+				<ul class=\"head-nav\">
+					{$menuHtml}
+					<li><img src=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/upload/avatar/ava1.jpeg\" alt=\"avatar\" class=\"ava-img\" ></li>
+					<li><a href=\"\" class=\"nav-item\">{$user}</a></li>
+					<li><a href=\"logout.php\" class=\"nav-item\">Đăng xuất</a></li>
+				</ul>
+			</div>
+
+
+			<div class=\"main\">
+				<div class=\"main-title\">
+					<span class=\"main-title-big\">{$pageName}</span>
+				</div>
+				<div class=\"main-content\">
+					<div class=\"conten\">
+						{$pPage[ 'body' ]}
+					</div>
+				</div>
+				
+			</div>
+		</div><div>
+		</div>
+
+	</body>
+
+</html>";
+}
+
 // -- END (Setup Functions)
 
 ?>
