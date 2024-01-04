@@ -20,3 +20,23 @@ CREATE TABLE IF NOT EXISTS users (
 
 INSERT INTO users (username, password, full_name, email, phone_number, role)
 VALUES ('admin', MD5('admin'), 'admin', 'user@example.com', '123456789', 'admin');
+
+-- create table "Assignments"
+
+CREATE TABLE IF NOT EXISTS assignments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    due_date DATE NOT NULL,
+    file VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+);
+
+-- create table for "messages"
+CREATE TABLE IF NOT EXISTS messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    message VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+);
