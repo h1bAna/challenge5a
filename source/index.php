@@ -14,35 +14,29 @@ $page[ 'page_id' ] = 'home';
 $page[ 'user_role' ] = lmsGetUserRole();
 $page[ 'body' ] .= "
 <div class=\"body_padded\">
-	<h1>Welcome to Damn Vulnerable Web Application!</h1>
-	<p>Damn Vulnerable Web Application (DVWA) là một ứng dụng mã nguồn PHP/MySQL tập hợp sẵn các lỗi logic về bảo mật ứng dụng web trong mã nguồn PHP. Mục tiêu chính của nó là hỗ trợ các chuyên gia bảo mật kiểm tra kỹ năng và công cụ của họ trong môi trường pháp lý, giúp các nhà phát triển web hiểu rõ hơn về quy trình bảo mật ứng dụng web và để hỗ trợ cả học sinh và giáo viên tìm hiểu về bảo mật ứng dụng web trong môi trường phòng học được kiểm soát.</p>
-	<p>Mục đích của DVWA là <em>thực hành một số lỗ hổng web phổ biến nhất</em>, ở <em>nhiều mức độ khó khác nhau</em>, với giao diện đơn giản dễ hiểu.</p>
+	<h1>Lorem Ipsum!</h1>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar tortor ut leo feugiat, molestie laoreet eros cursus. Duis condimentum fermentum arcu, a lacinia ligula pretium quis. Maecenas ornare vestibulum tempor. Donec sed nulla tincidunt, venenatis risus varius, fringilla dui. Pellentesque et posuere massa. In et risus ac risus mollis auctor. Fusce rutrum volutpat metus ut sollicitudin. Vivamus dolor magna, porta non volutpat at, elementum at nibh. Donec at diam mi. Nullam quis felis pretium, eleifend diam et, tristique purus.</p>
+	<p>Mauris lacus lorem, efficitur non aliquet vitae, finibus quis justo. Nullam bibendum augue at egestas malesuada. Etiam nec tempus sem. Aliquam erat volutpat. Proin scelerisque magna sit amet nulla ullamcorper, at convallis mauris pulvinar. Phasellus viverra lectus sit amet ullamcorper scelerisque. Proin malesuada felis urna. Quisque varius ultrices sollicitudin. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam nisi lacus, porttitor ut vehicula ac, malesuada at magna.	</p>
 	<hr />
 	<br />
 
-	<h2>Hướng Dẫn Chung</h2>
-	<p>Cách họ tiếp cận DVWA tùy thuộc vào người dùng. Bằng cách làm việc qua mọi mô-đun ở mức cố định hoặc chọn bất kỳ mô-đun nào và làm việc để đạt đến mức cao nhất mà họ có thể trước khi chuyển sang phần tiếp theo. Không có đối tượng cố định để hoàn thành một mô-đun; tuy nhiên người dùng nên cảm thấy rằng họ đã khai thác thành công hệ thống tốt nhất có thể bằng cách sử dụng lỗ hổng cụ thể đó.</p>
-	<p>Xin lưu ý rằng phần mềm này có cả lỗ hổng <em>được lập thành tài liệu và không có tài liệu</em>. Điều này là cố ý. Bạn nên thử và khám phá càng nhiều vấn đề càng tốt.</p>
-	<p>DVWA cũng bao gồm Web Application Firewall (WAF), PHPIDS, có thể được bật ở bất kỳ module nào để tăng thêm độ khó. Điều này sẽ chứng minh cách thêm một lớp bảo mật khác có thể chặn một số hành động độc hại. Lưu ý, cũng có nhiều phương pháp công khai khác nhau trong việc bypass các biện pháp bảo vệ này (vì vậy đây có thể được coi là một phần mở rộng cho những người dùng nâng cao hơn)!</p>
-	<p>Có một nút trợ giúp ở cuối mỗi trang, cho phép bạn xem các gợi ý và mẹo cho lỗ hổng đó. Ngoài ra còn có các liên kết bổ sung để đọc thêm thông tin cơ bản liên quan đến vấn đề bảo mật đó.</p>
+	<h2>Integer ut dui iaculis</h2>
+	<p>elementum elit non, commodo mauris. In mattis congue mi, a mattis quam ornare id. Curabitur convallis blandit felis eget ultrices. Curabitur ac velit viverra, luctus neque at, tincidunt nulla. Phasellus imperdiet, felis vitae lobortis vulputate, neque nibh dignissim nisi, at auctor purus mi in mauris. Morbi vestibulum risus at mauris facilisis, ac pellentesque lacus tempor. Phasellus et est non orci finibus consequat nec eget felis.</p>
+	<p>In tincidunt metus at dolor egestas tempus. Pellentesque vel ligula sed justo facilisis lacinia. Etiam lobortis elementum risus, ultricies imperdiet eros tempus non. Nullam leo dolor, auctor eu imperdiet eu, sollicitudin id libero. Integer feugiat, dolor a semper scelerisque, nunc risus pharetra ipsum, a accumsan ligula felis sit amet leo. Praesent iaculis eros lectus, ut lobortis nisi lobortis sed. Mauris imperdiet, nisi mattis dictum condimentum, enim diam auctor dui, sed fermentum urna mi quis tortor. In hac habitasse platea dictumst. Curabitur sed enim vel augue pretium iaculis.</p>
+	<p>Donec pretium lobortis lacinia. Nam non ex vulputate, bibendum urna in, feugiat risus. Curabitur posuere diam at urna faucibus, eu facilisis quam tincidunt. Praesent eu purus non tortor pharetra tincidunt at a dui. Nunc quis arcu vehicula, porta sapien quis, imperdiet nulla. Cras at tortor arcu. Maecenas at dui enim. Proin velit nisl, convallis eu libero vel, dictum mattis sem. Cras a sollicitudin orci. Vivamus ac eros quis tortor bibendum cursus. Vestibulum fermentum pellentesque ligula, ut semper augue cursus non. Pellentesque aliquam euismod nisi, in pellentesque nibh. Phasellus laoreet, lectus a aliquam varius, leo leo gravida nisl, sit amet tempus ex mi id erat.</p>
 	<hr />
 	<br />
 
-	<h2>CẢNH BÁO!</h2>
-	<p>Damn Vulnerable Web Application rất dễ bị tấn công! <em>Không tải nó lên thư mục html của nhà cung cấp dịch vụ lưu trữ của bạn hoặc bất kỳ máy chủ nào có Internet</em>, vì chúng sẽ bị khai thác. Bạn nên sử dụng máy ảo (chẳng hạn như " . dvwaExternalLinkUrlGet( 'https://www.virtualbox.org/','VirtualBox' ) . " hoặc " . dvwaExternalLinkUrlGet( 'https://www.vmware.com/','VMware' ) . "), dược đặt thành Chế độ mạng NAT. Bên trong máy khách, bạn có thể tải xuống và cài đặt" . dvwaExternalLinkUrlGet( 'https://www.apachefriends.org/en/xampp.html','XAMPP' ) . " cho máy chủ web và cơ sở dữ liệu.</p>
+	<h2>Lorem ipsum dolor sit amet!</h2>
+	<p>Duis pulvinar semper tortor euismod eleifend. Etiam eget felis ipsum. Mauris quis laoreet libero, vitae lobortis ligula. Maecenas ultrices venenatis mollis. Sed a turpis feugiat, fermentum turpis ac, bibendum nulla. Nullam id justo sit amet ligula congue ullamcorper semper non est. Donec aliquam diam est, eu viverra sapien blandit vehicula. Nam volutpat leo ultricies, consequat sem sed, scelerisque nunc. Aliquam eget aliquam lectus, a aliquam elit.</p>
 	<br />
-	<h3>Tuyên bố từ chối trách nhiệm</h3>
-	<p>Chúng tôi không chịu trách nhiệm về cách thức mà bất kỳ ai sử dụng ứng dụng này (DVWA). Chúng tôi đã làm cho các mục đích của ứng dụng rõ ràng và nó không được sử dụng với mục đích xấu. Chúng tôi đã đưa ra các cảnh báo và thực hiện các biện pháp để ngăn người dùng cài đặt DVWA vào các máy chủ web trực tiếp. Nếu máy chủ web của bạn bị xâm phạm thông qua cài đặt DVWA, chúng tôi không chịu trách nhiệm mà là trách nhiệm của người đã tải lên và cài đặt nó.</p>
+	<h3>Phasellus accumsan eget ex ac porttitor</h3>
+	<p>Phasellus iaculis arcu ut ipsum malesuada ultrices. Nunc et augue elit. Pellentesque quis ante malesuada, ultrices dui aliquet, posuere dolor. Curabitur sollicitudin purus vitae odio facilisis finibus. Cras luctus neque id faucibus fringilla. Mauris in pharetra turpis. Morbi ut mattis arcu. Nulla posuere urna eget augue sagittis ornare. Vivamus vehicula massa sit amet ipsum porta tempus. Aenean cursus arcu ut accumsan ultricies. Praesent blandit, erat rhoncus convallis commodo, eros ex consequat tellus, id semper odio leo ac nisi.</p>
 	<hr />
 	<br />
 
-	<h2>Tìm Hiểu Thêm</h2>
-	<p>DVWA nhằm mục đích che phủ các lỗ hổng thường thấy nhất được tìm thấy trong các ứng dụng web hiện nay. Tuy nhiên, có rất nhiều vấn đề khác với các ứng dụng web. Nếu bạn muốn khám phá bất kỳ vectơ tấn công bổ sung nào hoặc muốn có nhiều thử thách khó khăn hơn, bạn có thể muốn xem xét các dự án khác sau:</p>
-	<ul>
-		<li>" . dvwaExternalLinkUrlGet( 'https://github.com/webpwnized/mutillidae', 'Mutillidae') . "</li>
-		<li>" . dvwaExternalLinkUrlGet( 'https://www.owasp.org/index.php/OWASP_Broken_Web_Applications_Project', 'OWASP Broken Web Applications Project
-') . "</li>
-	</ul>
+	<h2>More</h2>
+	<p>Sed tempor purus venenatis enim mattis convallis. Maecenas quam orci, porttitor et felis sed, porta tempus est. Praesent condimentum nunc vitae neque suscipit pretium. Fusce feugiat scelerisque arcu, eu vehicula libero tincidunt nec. Curabitur ornare ex mi. Fusce volutpat nisl et arcu laoreet, et placerat nunc posuere. Mauris commodo sit amet velit a maximus. Vivamus turpis enim, fringilla non massa eu, tempus dignissim mauris.</p>
 	<hr />
 	<br />
 </div>";

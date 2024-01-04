@@ -13,13 +13,10 @@ $page[ 'user_role' ] = lmsGetUserRole();
 
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])){
     $id = $_POST["id"];
-    $username = $_POST["username"];
+    $username = lmsCurrentUser();
     $username = stripslashes( $username );
     $username = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $username ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
     $password = $_POST["password"];
-    $fullname = $_POST["fullname"];
-    $fullname = stripslashes( $fullname );
-    $fullname = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $fullname ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
     $email = $_POST["email"];
     $email = stripslashes( $email );
     $email = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $email ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
@@ -61,7 +58,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])){
       // if everything is ok, try to upload file
     } else {
         // remove old avatar
-        $query  = "SELECT * FROM `users` WHERE id='$id';";
+        $query  = "SELECT * FROM `users` WHERE username='$username';";
         $result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br /> Something wrong with database.</pre>' );
         if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
             // get user role from result
@@ -81,22 +78,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])){
         }
         $hashedPassword = md5($password);
         // update user with new info based on id
-        $query = "UPDATE `users` SET `username`='$username',`password`='$hashedPassword',`full_name`='$fullname',`email`='$email',`phone_number`='$phone',`avatar`='$targetFilePath' WHERE id='$id';";
+        $query = "UPDATE `users` SET `password`='$hashedPassword',`email`='$email',`phone_number`='$phone',`avatar`='$targetFilePath' WHERE username='$username';";
         $result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br /> Something wrong with database.</pre>' );
         if($result){
-            lmsMessagePush("Chỉnh sửa thông tin sinh viên thành công");
-            lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'modifyStudent.php');
+            lmsMessagePush("Chỉnh sửa thông tin thành công");
+            lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'selfModify.php');
         }
         else{
-            lmsMessagePush("Chỉnh sửa thông tin sinh viên thất bại");
-            lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'modifyStudent.php');
+            lmsMessagePush("Chỉnh sửa thông tin thất bại");
+            lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'selfModify.php');
         }
     }
 }
 
 
 
-$username = $_GET["username"];
+$username = lmsCurrentUser();
 $username = stripslashes( $username );
 $username = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $username ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 
@@ -105,7 +102,6 @@ $result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . 
 if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
     // get user role from result
     $row = mysqli_fetch_assoc( $result );
-    $id = $row[ 'id' ];
     $fullname = $row[ 'full_name' ];
     $email = $row[ 'email' ];
     $phone = $row[ 'phone_number' ];
@@ -113,17 +109,13 @@ if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
     $page[ 'body' ] .= "
     <div class=\"container mt-5\">
         <form action=\"\" method=\"POST\" enctype=\"multipart/form-data\">
-            <div class=\"form-group\" style=\"display: none\">
-                <label for=\"id\">Mã số sinh viên:</label>
-                <input type=\"text\" class=\"form-control\" id=\"id\" name=\"id\" value=\"$id\" readonly>
-            </div>
             <div class=\"form-group\">
                 <label for=\"username\">Tên đăng nhập:</label>
-                <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" value=\"$username\" required>
+                <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" value=\"$username\" readonly disabled>
             </div>
             <div class=\"form-group\">
                 <label for=\"fullname\">Họ và tên:</label>
-                <input type=\"text\" class=\"form-control\" id=\"fullname\" name=\"fullname\" value=\"$fullname\" required>
+                <input type=\"text\" class=\"form-control\" id=\"fullname\" name=\"fullname\" value=\"$fullname\" readonly disabled>
             </div>
             <div class=\"form-group\">
                 <label for=\"password\">Mật khẩu:</label>
@@ -148,18 +140,7 @@ if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
     </div>
     ";
 }else{
-    $page[ 'body' ] .= "
-            <form>
-                <div class=\"form-group\">
-                    <label for=\"username\">Tên đăng nhập:</label>
-                    <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" required>
-                </div>
-                <div class=\"form-group\">
-                    <button type=\"submit\" class=\"btn btn-primary\">Lấy thông tin sinh viên</button>
-                </div>
-            </form>
-    ";
-    lmsMessagePush("Không tìm thấy sinh viên");
+    lmsMessagePush("Lỗi hệ thống! Không thể tìm thấy thông tin của bạn.");
 }
 
 
