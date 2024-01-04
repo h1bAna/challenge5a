@@ -40,8 +40,9 @@ if( isset( $_POST[ 'Login' ] ) ) {
 		// get user role from result
 		$row = mysqli_fetch_assoc( $result );
 		$user_role = $row[ 'role' ];
+		$avatar = $row['avatar'];
 		lmsMessagePush( "You have logged in as '{$user}'" );
-		lmsLogin( $user, $user_role );
+		lmsLogin( $user, $user_role, $avatar );
 		lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'index.php' );
 	}
 

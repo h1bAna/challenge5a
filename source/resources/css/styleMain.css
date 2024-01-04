@@ -8,6 +8,7 @@
 	align-items: center;
 	height: 7rem;
     padding-bottom: 20px;
+	padding-top: 20px;
 }
 
 .main-title-big{
@@ -15,7 +16,7 @@
 	font-size: 6rem;
 	font-family: 'Playfair Display', serif;
 	background: radial-gradient(circle, rgba(255,255,255,0.3309698879551821) 0%, rgba(222,237,222,0) 100%);
-
+	margin-top: 10px;
 }
 
 .main-content{

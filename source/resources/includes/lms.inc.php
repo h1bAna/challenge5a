@@ -37,10 +37,11 @@ function lmsPageStartup( $pActions ) {
 	}
 }
 
-function lmsLogin( $pUsername, $pRole ) {
+function lmsLogin( $pUsername, $pRole, $pAvatar ) {
 	$lmsSession =& lmsSessionGrab();
 	$lmsSession[ 'username' ] = $pUsername;
 	$lmsSession[ 'role' ] = $pRole;
+	$lmsSession[ 'avatar'] = $pAvatar;
 }
 
 
@@ -235,6 +236,7 @@ function lmsHtmlEcho( $pPage ) {
 
 	$menuHtml = '';
 	$user = lmsCurrentUser();
+	$avatar = lmsSessionGrab()['avatar'];
 	foreach( $menuBlocks as $menuItem ) {
 		if( $menuItem[ 'id' ] == '' ) {
 			continue;
@@ -280,6 +282,7 @@ function lmsHtmlEcho( $pPage ) {
 		<link rel=\"stylesheet\" type=\"text/css\" href=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/css/styleMain.css\">
 		<link href=\"https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap\" rel=\"stylesheet\">
 		<link href=\"https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap\" rel=\"stylesheet\">	
+		<link href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css\" rel=\"stylesheet\">
 
 	</head>
 
@@ -288,7 +291,7 @@ function lmsHtmlEcho( $pPage ) {
 			<div class=\"head\">
 				<ul class=\"head-nav\">
 					{$menuHtml}
-					<li><img src=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/upload/avatar/ava1.jpeg\" alt=\"avatar\" class=\"ava-img\" ></li>
+					<li><img src=\"" . LMS_WEB_PAGE_TO_ROOT . "{$avatar}\" content-type=  alt=\"avatar\" class=\"ava-img\" ></li>
 					<li><a href=\"\" class=\"nav-item\">{$user}</a></li>
 					<li><a href=\"logout.php\" class=\"nav-item\">Đăng xuất</a></li>
 				</ul>
@@ -301,14 +304,18 @@ function lmsHtmlEcho( $pPage ) {
 				</div>
 				<div class=\"main-content\">
 					<div class=\"conten\">
-						{$pPage[ 'body' ]}
+						<div class=\"container mt-5\">
+							{$pPage[ 'body' ]}
+							<br /><br />
+							{$messagesHtml}
+						</div>
 					</div>
 				</div>
 				
 			</div>
 		</div><div>
 		</div>
-
+		<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js\"></script>
 	</body>
 
 </html>";
