@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS assignments (
     description VARCHAR(255) NOT NULL,
     due_date DATE NOT NULL,
     file VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- create table for "messages"
@@ -39,4 +39,17 @@ CREATE TABLE IF NOT EXISTS messages (
     receiver_id INT NOT NULL,
     message VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (receiver_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS returnAssignment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    assignment_id INT NOT NULL,
+    student_id INT NOT NULL,
+    description VARCHAR(255),
+    file VARCHAR(255),
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (assignment_id) REFERENCES assignments(id),
+    FOREIGN KEY (student_id) REFERENCES users(id)
 );

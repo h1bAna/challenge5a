@@ -1,9 +1,8 @@
 <?php
-
-define( 'LMS_WEB_PAGE_TO_ROOT', '' );
-require_once LMS_WEB_PAGE_TO_ROOT . 'resources/includes/lms.inc.php';
+require_once 'resources/includes/lms.inc.php';
 
 lmsPageStartup( array( 'authenticated') );
+lmsIsAdmin();
 lmsDatabaseConnect();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
@@ -61,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         lmsMessagePush("Sorry, your file was not uploaded.");
       // if everything is ok, try to upload file
     } else {
-        $targetDir = LMS_WEB_PAGE_TO_ROOT. "resources/upload/avatar/";
+        $targetDir = "resources/upload/avatar/";
         $targetFilePath = $targetDir . $username . "." . $imageFileType;
         if (move_uploaded_file($_FILES["avatar"]["tmp_name"], $targetFilePath)) {
             lmsMessagePush("The file ". htmlspecialchars( basename( $_FILES["avatar"]["name"])). " has been uploaded.");
@@ -73,12 +72,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO `users` (`username`, `password`, `full_name`, `email`, `phone_number`,`role`, `avatar`) VALUES ('$username', '$hashedPassword', '$fullname' , '$email', '$phone','student', '$targetFilePath')";
         $result = @mysqli_query($GLOBALS["___mysqli_ston"],  $sql ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br /> Something wrong with database.</pre>' );
         if($result){
-
             lmsMessagePush("Thêm sinh viên thành công");
+            lmsRedirect("addStudent.php");
         }
         else{
             lmsMessagePush("Thêm sinh viên thất bại");
-        
+            lmsRedirect("addStudent.php");
         }
     }
 }
@@ -92,7 +91,7 @@ $page[ 'body' ] .= "
 <form action=\"\" method=\"post\" enctype=\"multipart/form-data\">
             <div class=\"form-group\">
                 <label for=\"username\">Tên đăng nhập:</label>
-                <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" required>
+                <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" maxlength=\"50\" required>
             </div>
             <div class=\"form-group\">
                 <label for=\"password\">Mật khẩu:</label>
@@ -100,11 +99,11 @@ $page[ 'body' ] .= "
             </div>
             <div class=\"form-group\">
                 <label for=\"fullname\">Họ tên:</label>
-                <input type=\"text\" class=\"form-control\" id=\"fullname\" name=\"fullname\" required>
+                <input type=\"text\" class=\"form-control\" id=\"fullname\" name=\"fullname\" maxlength=\"100\" required>
             </div>
             <div class=\"form-group\">
                 <label for=\"email\">Email:</label>
-                <input type=\"email\" class=\"form-control\" id=\"email\" name=\"email\" required>
+                <input type=\"email\" class=\"form-control\" id=\"email\" name=\"email\" maxlength=\"100\" required>
             </div>
             <div class=\"form-group\">
                 <label for=\"phone\">Số điện thoại:</label>
@@ -120,7 +119,4 @@ $page[ 'body' ] .= "
         </form>";
 
 lmsHtmlEcho( $page );
-
-
-
 ?>

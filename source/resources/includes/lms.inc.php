@@ -1,18 +1,13 @@
 <?php
 
-if( !defined( 'LMS_WEB_PAGE_TO_ROOT' ) ) {
-	die( 'LMS System error- WEB_PAGE_TO_ROOT undefined' );
-	exit;
-}
-
 session_start(); // Creates a 'Full Path Disclosure' vuln.
 
-if (!file_exists(LMS_WEB_PAGE_TO_ROOT . 'config/config.inc.php')) {
-	die ("DVWA System error - config file not found. Copy config/config.inc.php.dist to config/config.inc.php and configure to your environment.");
+if (!file_exists('config/config.inc.php')) {
+	die ("System error - config file not found. Copy config/config.inc.php.dist to config/config.inc.php and configure to your environment.");
 }
 
 // Include configs
-require_once LMS_WEB_PAGE_TO_ROOT . 'config/config.inc.php';
+require_once 'config/config.inc.php';
 
 // Declare the $html variable
 if( !isset( $html ) ) {
@@ -32,16 +27,17 @@ function &lmsSessionGrab() {
 function lmsPageStartup( $pActions ) {
 	if( in_array( 'authenticated', $pActions ) ) {
 		if( !lmsIsLoggedIn()) {
-			lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'login.php' );
+			lmsRedirect('login.php' );
 		}
 	}
 }
 
-function lmsLogin( $pUsername, $pRole, $pAvatar ) {
+function lmsLogin( $pUsername, $pRole, $pAvatar, $pID ) {
 	$lmsSession =& lmsSessionGrab();
 	$lmsSession[ 'username' ] = $pUsername;
 	$lmsSession[ 'role' ] = $pRole;
 	$lmsSession[ 'avatar'] = $pAvatar;
+	$lmsSession[ 'id' ] = $pID;
 }
 
 
@@ -53,6 +49,29 @@ function lmsIsLoggedIn() {
 function lmsGetUserRole() {
 	$lmsSession =& lmsSessionGrab();
 	return ( isset( $lmsSession[ 'role' ] ) ? $lmsSession[ 'role' ] : '') ;
+}
+
+function lmsGetCurrentUserId() {
+	$lmsSession =& lmsSessionGrab();
+	return ( isset( $lmsSession[ 'id' ] ) ? $lmsSession[ 'id' ] : '') ;
+}
+
+function lmsIsAdmin() {
+	if(lmsCurrentUser() != "admin"){
+		// forbidden
+		$page = lmsPageNewGrab();
+		$page[ 'title' ]   = 'forbidden';
+		$page[ 'page_id' ] = 'forbidden';
+		$page[ 'user_role' ] = lmsGetUserRole();
+		$page[ 'body' ] .= "
+		<div class=\"container mt-5\">
+			<h2>403 Forbidden</h2>
+			<p>Bạn không có quyền truy cập vào trang này</p>
+		</div>
+		";
+		lmsHtmlEcho( $page );
+		exit();
+	}
 }
 
 function lmsLogout() {
@@ -161,7 +180,6 @@ function lmsDatabaseConnect() {
         	$DBMS_errorFunc = 'mysqli_error()';
 
 			lmsMessagePush( 'Unable to connect to the database.<br />' . $DBMS_errorFunc );
-			lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'setup.php' );
 		}
 		// MySQL PDO Prepared Statements (for impossible levels)
 		$db = new PDO('mysql:host=' . $_LMS[ 'db_server' ].';dbname=' . $_LMS[ 'db_database' ].';port=' . $_LMS['db_port'] . ';charset=utf8', $_LMS[ 'db_user' ], $_LMS[ 'db_password' ]);
@@ -245,7 +263,7 @@ function lmsHtmlEcho( $pPage ) {
 		if($menuItem[ 'id' ] == $pPage[ 'page_id' ]){
 			$pageName = $menuItem[ 'name' ];
 		}
-		$fixedUrl = LMS_WEB_PAGE_TO_ROOT.$menuItem[ 'url' ];
+		$fixedUrl = $menuItem[ 'url' ];
 		$menuHtml .= "<li class=\"{$selectedClass}\" ><a class=\"nav-item\" href=\"{$fixedUrl}\">{$menuItem[ 'name' ]}</a></li>";
 	}
 
@@ -271,15 +289,15 @@ function lmsHtmlEcho( $pPage ) {
 
 		<title>{$pPage[ 'title' ]}</title>
 
-		<link rel=\"stylesheet\" type=\"text/css\" href=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/css/main.css\" />
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/css/main.css\" />
 
-		<link rel=\"icon\" type=\"\image/ico\" href=\"" . LMS_WEB_PAGE_TO_ROOT . "favicon.ico\" />
+		<link rel=\"icon\" type=\"\image/ico\" href=\"favicon.ico\" />
 
-		<script type=\"text/javascript\" src=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/js/dvwaPage.js\"></script>
-		<link rel=\"stylesheet\" type=\"text/css\" href=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/css/styleHeader.css\">
+		<script type=\"text/javascript\" src=\"resources/js/dvwaPage.js\"></script>
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/css/styleHeader.css\">
 		<link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap\" rel=\"stylesheet\">
 		<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css\">
-		<link rel=\"stylesheet\" type=\"text/css\" href=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/css/styleMain.css\">
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/css/styleMain.css\">
 		<link href=\"https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap\" rel=\"stylesheet\">
 		<link href=\"https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap\" rel=\"stylesheet\">	
 		<link href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css\" rel=\"stylesheet\">
@@ -291,7 +309,7 @@ function lmsHtmlEcho( $pPage ) {
 			<div class=\"head\">
 				<ul class=\"head-nav\">
 					{$menuHtml}
-					<li><img src=\"" . LMS_WEB_PAGE_TO_ROOT . "{$avatar}\" content-type=  alt=\"avatar\" class=\"ava-img\" ></li>
+					<li><img src=\"{$avatar}\" content-type=  alt=\"avatar\" class=\"ava-img\" ></li>
 					<li><a href=\"\" class=\"nav-item\">{$user}</a></li>
 					<li><a href=\"logout.php\" class=\"nav-item\">Đăng xuất</a></li>
 				</ul>

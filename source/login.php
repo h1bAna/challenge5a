@@ -1,7 +1,6 @@
 <?php
 
-define( 'LMS_WEB_PAGE_TO_ROOT', '' );
-require_once LMS_WEB_PAGE_TO_ROOT . 'resources/includes/lms.inc.php';
+require_once 'resources/includes/lms.inc.php';
 
 lmsDatabaseConnect();
 
@@ -41,9 +40,10 @@ if( isset( $_POST[ 'Login' ] ) ) {
 		$row = mysqli_fetch_assoc( $result );
 		$user_role = $row[ 'role' ];
 		$avatar = $row['avatar'];
+		$id = $row['id'];
 		lmsMessagePush( "You have logged in as '{$user}'" );
-		lmsLogin( $user, $user_role, $avatar );
-		lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'index.php' );
+		lmsLogin( $user, $user_role, $avatar, $id );
+		lmsRedirect( 'index.php' );
 	}
 
 	// Login failed
@@ -70,7 +70,7 @@ echo "<!DOCTYPE html>
 
 		<title>Login</title>
 
-		<link rel=\"stylesheet\" type=\"text/css\" href=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/css/login.css\" />
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/css/login.css\" />
 
 	</head>
 
@@ -82,7 +82,7 @@ echo "<!DOCTYPE html>
 
 	<br />
 
-	<p><img src=\"" . LMS_WEB_PAGE_TO_ROOT . "resources/images/logo_kma.png\" /></p>
+	<p><img src=\"resources/images/logo_kma.png\" /></p>
 
 	<br />
 

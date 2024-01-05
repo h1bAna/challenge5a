@@ -1,7 +1,6 @@
 <?php
 
-define( 'LMS_WEB_PAGE_TO_ROOT', '' );
-require_once LMS_WEB_PAGE_TO_ROOT . 'resources/includes/lms.inc.php';
+require_once 'resources/includes/lms.inc.php';
 
 lmsPageStartup( array( 'authenticated') );
 lmsDatabaseConnect();
@@ -69,7 +68,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])){
                 unlink($oldAvatar);
             }
         }
-        $targetDir = LMS_WEB_PAGE_TO_ROOT. "resources/upload/avatar/";
+        $targetDir = "resources/upload/avatar/";
         $targetFilePath = $targetDir . $username . "." . $imageFileType;
         if (move_uploaded_file($_FILES["avatar"]["tmp_name"], $targetFilePath)) {
             lmsMessagePush("The file ". htmlspecialchars( basename( $_FILES["avatar"]["name"])). " has been uploaded.");
@@ -82,11 +81,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])){
         $result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br /> Something wrong with database.</pre>' );
         if($result){
             lmsMessagePush("Chỉnh sửa thông tin thành công");
-            lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'selfModify.php');
+            lmsRedirect( 'selfModify.php');
         }
         else{
             lmsMessagePush("Chỉnh sửa thông tin thất bại");
-            lmsRedirect( LMS_WEB_PAGE_TO_ROOT . 'selfModify.php');
+            lmsRedirect( 'selfModify.php');
         }
     }
 }
