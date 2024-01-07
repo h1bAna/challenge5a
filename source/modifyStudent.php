@@ -83,6 +83,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])){
         $query = "UPDATE `users` SET `username`='$username',`password`='$hashedPassword',`full_name`='$fullname',`email`='$email',`phone_number`='$phone',`avatar`='$targetFilePath' WHERE id='$id';";
         $result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br /> Something wrong with database.</pre>' );
         if($result){
+            // reload session info
+            lmsLogin( $username, lmsGetUserRole(), $targetFilePath, $id );
             lmsMessagePush("Chỉnh sửa thông tin sinh viên thành công");
             lmsRedirect('modifyStudent.php');
         }

@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
     role VARCHAR(20) NOT NULL,
     avatar VARCHAR(255)
 );
---deploy public kèm hai tài khoản giáo viên và hai tài khoản sinh viên (tài khoản: teacher1 / 123456a@A ; teacher2 / 123456a@A; student1 / 123456a@A ; student2 / 123456a@A).
+-- deploy public kèm hai tài khoản giáo viên và hai tài khoản sinh viên (tài khoản: teacher1 / 123456a@A ; teacher2 / 123456a@A; student1 / 123456a@A ; student2 / 123456a@A).
 INSERT INTO users (username, password, full_name, email, phone_number, role)
 VALUES ('teacher1', MD5('123456a@A'), 'teacher1', 'user@example.com', '123456789', 'admin');
 

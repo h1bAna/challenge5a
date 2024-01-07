@@ -244,7 +244,7 @@ function lmsHtmlEcho( $pPage ) {
 		$menuBlocks[] = array( 'id' => 'viewAssignment', 'name' => 'Xem bài tập', 'url' => 'viewAssignment.php' );
 	}
 
-
+	$menuBlocks[] = array( 'id' => 'message', 'name' => 'Tin nhắn', 'url' => 'message.php' );
 	$menuBlocks[] = array( 'id' => 'selfModify', 'name' => 'Thay đổi thông tin bản thân', 'url' => 'selfModify.php' );
 	$menuBlocks[] = array( 'id' => 'viewUser', 'name' => 'Xem người dùng', 'url' => 'userView.php' );
 
@@ -289,11 +289,9 @@ function lmsHtmlEcho( $pPage ) {
 
 		<title>{$pPage[ 'title' ]}</title>
 
-		<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/css/main.css\" />
 
 		<link rel=\"icon\" type=\"\image/ico\" href=\"favicon.ico\" />
 
-		<script type=\"text/javascript\" src=\"resources/js/dvwaPage.js\"></script>
 		<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/css/styleHeader.css\">
 		<link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap\" rel=\"stylesheet\">
 		<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css\">
