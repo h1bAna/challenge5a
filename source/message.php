@@ -4,6 +4,45 @@ require_once 'resources/includes/lms.inc.php';
 lmsPageStartup( array( 'authenticated') );
 lmsDatabaseConnect();
 
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['message']) && isset($_POST['edit-btn'])){
+  $message = $_POST['message'];
+  $id = $_POST['id'];
+  // prevent SQL injection
+  $message = stripslashes( $message );
+  $message = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $message ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+  $id = stripslashes( $id );
+  $id = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $id ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+
+  // edit message allowed only if current user is the sender of the message
+  $query = "UPDATE messages SET message = '$message' WHERE id = $id AND sender_id = " . lmsGetCurrentUserId() . ";";
+  $result = mysqli_query($GLOBALS["___mysqli_ston"],  $query);
+  if (!$result) {
+      die('<pre>' . mysqli_error($GLOBALS["___mysqli_ston"]) . '.<br /> Something wrong with database.</pre>');
+  }else{
+      lmsMessagePush("success");
+      lmsRedirect("message.php");
+  }
+}
+
+// delete message allowed only if current user is the sender of the message
+
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST['delete-btn'])){
+  $id = $_POST['id'];
+  // prevent SQL injection
+  $id = stripslashes( $id );
+  $id = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $id ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+
+  $query = "DELETE FROM messages WHERE id = $id AND sender_id = " . lmsGetCurrentUserId() . ";";
+  $result = mysqli_query($GLOBALS["___mysqli_ston"],  $query);
+  if (!$result) {
+      die('<pre>' . mysqli_error($GLOBALS["___mysqli_ston"]) . '.<br /> Something wrong with database.</pre>');
+  }else{
+      lmsMessagePush("success");
+      lmsRedirect("message.php");
+  }
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Xác thực token ở đây, ví dụ: kiểm tra xem token có tồn tại không
   $headers = apache_request_headers();

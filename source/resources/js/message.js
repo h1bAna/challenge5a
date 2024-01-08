@@ -1,3 +1,5 @@
+
+
 function processData(data, userID) {
     // reverse data
     data = data.reverse();
@@ -11,16 +13,58 @@ function processData(data, userID) {
     // Tạo các tin nhắn từ dữ liệu và thêm vào conversationDetail
     // `<div class="card-body"><h5>${conversation.title}</h5><ul>${conversation.messages.map(message => `<li>${message}</li>`).join("")}</ul></div>`
     data.forEach(message => {
-        let messageElement = document.createElement('div');
-        messageElement.classList.add('card-body');
-        if(message.sender_id == userID){
-            messageElement.classList.add('text-right');
-        }
-        messageElement.innerHTML = `<ul>${message.message}</ul>`;
-        conversationDetail.appendChild(messageElement);
-        console.log(message);
+        // create form
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'message.php';
+        form.classList.add('card-body');
 
+        if (message.sender_id == userID) {
+            form.classList.add('text-right');
+        }
+
+        // create textarea
+        let textarea = document.createElement('textarea');
+        textarea.name = 'message';
+        textarea.textContent = message.message;
+
+        // create edit button
+        let editButton = document.createElement('button');
+        // type submit to submit form
+        editButton.type = 'submit';
+        editButton.id = 'edit-btn';
+        editButton.name = 'edit-btn';
+        editButton.textContent = 'Edit';
+        editButton.classList.add('edit-btn');
+
+        // create delete button
+        let deleteButton = document.createElement('button');
+        // type submit to submit form
+        deleteButton.type = 'submit';
+        deleteButton.id = 'delete-btn';
+        deleteButton.name = 'delete-btn';
+        deleteButton.textContent = 'Delete';
+        deleteButton.classList.add('delete-btn');
+
+        // create hidden id of message
+        let idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = message.id;
+        idInput.readOnly = true;
+
+        content = `<div>`;
+        content += textarea.outerHTML;
+        content += `<br>`;
+        content += editButton.outerHTML;
+        content += deleteButton.outerHTML;
+        content += idInput.outerHTML;
+        content += `</div>`;
+        form.innerHTML = content;
+        conversationDetail.appendChild(form);
     });
+
+    
     // reload html
 
 }
