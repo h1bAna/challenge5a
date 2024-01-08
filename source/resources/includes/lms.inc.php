@@ -38,7 +38,6 @@ function lmsLogin( $pUsername, $pRole, $pAvatar, $pID ) {
 	$lmsSession[ 'role' ] = $pRole;
 	$lmsSession[ 'avatar'] = $pAvatar;
 	$lmsSession[ 'id' ] = $pID;
-	die( print_r( $_SESSION ) );
 }
 
 

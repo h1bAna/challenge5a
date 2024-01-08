@@ -48,10 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       echo json_encode(['error' => 'Missing data']);
       exit();
   }
-} else {
-  http_response_code(405); // Trả về mã lỗi 405 nếu phương thức không hợp lệ
-  echo json_encode(['error' => 'Method Not Allowed']);
-  exit();
 }
 
 $page = lmsPageNewGrab();
