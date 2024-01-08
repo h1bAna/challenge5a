@@ -122,7 +122,7 @@ echo "<!DOCTYPE html>
 
 	<div id=\"footer\">
     <p style=\"font-size:13px;\" >Learning management system!</p>
-	<p>" . dvwaExternalLinkUrlGet( 'https://github.com/h1bAna/challenge5a', 'Learning management system (LMS)' ) . "</p>
+	<p>" . lmsExternalLinkUrlGet( 'https://github.com/h1bAna/challenge5a', 'Learning management system (LMS)' ) . "</p>
 
 	</div> <!--<div id=\"footer\"> -->
 

@@ -1,6 +1,6 @@
 <?php
 
-session_start(); // Creates a 'Full Path Disclosure' vuln.
+session_start(); 
 
 if (!file_exists('config/config.inc.php')) {
 	die ("System error - config file not found. Copy config/config.inc.php.dist to config/config.inc.php and configure to your environment.");
@@ -38,6 +38,7 @@ function lmsLogin( $pUsername, $pRole, $pAvatar, $pID ) {
 	$lmsSession[ 'role' ] = $pRole;
 	$lmsSession[ 'avatar'] = $pAvatar;
 	$lmsSession[ 'id' ] = $pID;
+	die( print_r( $_SESSION ) );
 }
 
 
@@ -57,7 +58,7 @@ function lmsGetCurrentUserId() {
 }
 
 function lmsIsAdmin() {
-	if(lmsCurrentUser() != "admin"){
+	if(lmsGetUserRole() != "admin"){
 		// forbidden
 		$page = lmsPageNewGrab();
 		$page[ 'title' ]   = 'forbidden';
@@ -135,7 +136,7 @@ function messagesPopAllToHtml() {
 // --END (message functions)
 
 // To be used on all external links --
-function dvwaExternalLinkUrlGet( $pLink,$text=null ) {
+function lmsExternalLinkUrlGet( $pLink,$text=null ) {
 	if(is_null( $text )) {
 		return '<a href="' . $pLink . '" target="_blank">' . $pLink . '</a>';
 	}
