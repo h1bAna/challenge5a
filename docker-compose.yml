@@ -1,7 +1,7 @@
 version: "1"
 
 services:
-    dvwa:
+    lms:
         build: ./image_php
         ports:
             - "8082:80"
