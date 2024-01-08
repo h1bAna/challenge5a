@@ -106,9 +106,11 @@ if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
     $email = $row[ 'email' ];
     $phone = $row[ 'phone_number' ];
     $avatar = $row[ 'avatar' ];
+    $id = $row[ 'id' ];
     $page[ 'body' ] .= "
     <div class=\"container mt-5\">
         <form action=\"\" method=\"POST\" enctype=\"multipart/form-data\">
+            <input type=\"hidden\" name=\"id\" value=\"$id\">
             <div class=\"form-group\">
                 <label for=\"username\">Tên đăng nhập:</label>
                 <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" value=\"$username\" readonly disabled>
