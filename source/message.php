@@ -32,17 +32,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $userId2 = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $userId2 ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
       $time = stripslashes( $time );
       $time = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $time ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
-
-      $query = 
-      // Ví dụ: Trả về dữ liệu như là một mảng JSON
-      $messages = [
-          ['id' => 1, 'sender' => $userId1, 'receiver' => $userId2, 'content' => 'Hello', 'sent_time' => $time],
-          ['id' => 2, 'sender' => $userId2, 'receiver' => $userId1, 'content' => 'Hi', 'sent_time' => $time]
-      ];
-
-      header('Content-Type: application/json');
-      echo json_encode($messages);
-      exit();
+      // convert time to timestamp
+      // get 10 messages between two users sent before $time, sorted by sent_time ascending
+      $query = "
+      SELECT *
+      FROM messages
+      WHERE 
+        (sender_id = " . $userId1 . " AND receiver_id = " . $userId2 . ") OR
+        (sender_id = " . $userId2 . " AND receiver_id = " . $userId1 . ") AND
+      created_at <= '" . $time . "'
+      ORDER BY created_at DESC
+      LIMIT 10;
+      ";
+      $result = mysqli_query($GLOBALS["___mysqli_ston"],  $query);
+      if (!$result) {
+          die('<pre>' . mysqli_error($GLOBALS["___mysqli_ston"]) . '.<br /> Something wrong with database.</pre>');
+      }else{
+          $messages = array();
+          foreach ($result as $row) {
+              $messages[] = $row;
+          }
+          header('Content-Type: application/json');
+          echo json_encode($messages);
+          exit();
+      }
   } else {
       http_response_code(400); // Trả về mã lỗi 400 nếu thiếu thông tin
       echo json_encode(['error' => 'Missing data']);
@@ -67,7 +80,7 @@ $page[ 'body' ] .= "
 ";
 // get all conversations of current user
 
-$query  = "SELECT DISTINCT u.full_name
+$query  = "SELECT user_conversations.user_id, u.full_name
 FROM (
     SELECT sender_id AS user_id FROM messages WHERE receiver_id = " . lmsGetCurrentUserId() . "
     UNION
@@ -76,15 +89,21 @@ FROM (
 INNER JOIN users u ON user_conversations.user_id = u.id
 WHERE u.id != " . lmsGetCurrentUserId() . ";";
 
+// Lấy thời gian hiện tại
+$currentDateTime = new DateTime();
+
+// Định dạng thời gian theo 'YYYY-MM-DD HH:mm:ss'
+$formattedDateTime = $currentDateTime->format('Y-m-d H:i:s');
 $result = mysqli_query($GLOBALS["___mysqli_ston"],  $query);
 if (!$result) {
     die('<pre>' . mysqli_error($GLOBALS["___mysqli_ston"]) . '.<br /> Something wrong with database.</pre>');
 }else{
-    $conversations = array();
+    $userId = $row["user_id"];
+    $currentUser = lmsGetCurrentUserId();
     foreach ($result as $row) {
-        $conversations[] = $row["id"];
+        $userId = $row["user_id"];
         $page[ 'body' ] .= "
-        <li class=\"list-group-item\" onclick=\"loadConversation(" . $row["id"] . ")\">" . $row["full_name"] . "</li>
+        <li class=\"list-group-item\" onclick=\"loadConversation($userId, $currentUser, '$formattedDateTime')\">" . $row["full_name"] . "</li>
         ";
     }
     
