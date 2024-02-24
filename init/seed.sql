@@ -18,20 +18,20 @@ CREATE TABLE IF NOT EXISTS users (
     avatar VARCHAR(255)
 );
 -- deploy public kèm hai tài khoản giáo viên và hai tài khoản sinh viên (tài khoản: teacher1 / 123456a@A ; teacher2 / 123456a@A; student1 / 123456a@A ; student2 / 123456a@A).
-INSERT INTO users (username, password, full_name, email, phone_number, role)
-VALUES ('teacher1', MD5('123456a@A'), 'teacher1', 'user@example.com', '123456789', 'admin');
+INSERT INTO users (username, password, full_name, email, phone_number, role, avatar)
+VALUES ('teacher1', MD5('123456a@A'), 'teacher1', 'user@example.com', '123456789', 'admin', 'resources/upload/avatar/teacher1.jpg');
 
-INSERT INTO users (username, password, full_name, email, phone_number, role)
-VALUES ('teacher2', MD5('123456a@A'), 'teacher2', 'user@example.com', '123456789', 'admin');
+INSERT INTO users (username, password, full_name, email, phone_number, role, avatar)
+VALUES ('teacher2', MD5('123456a@A'), 'teacher2', 'user@example.com', '123456789', 'admin', 'resources/upload/avatar/teacher2.jpeg');
 
-INSERT INTO users (username, password, full_name, email, phone_number, role)
-VALUES ('student1', MD5('123456a@A'), 'student1', 'user@example.com', '123456789', 'student');
+INSERT INTO users (username, password, full_name, email, phone_number, role, avatar)
+VALUES ('student1', MD5('123456a@A'), 'student1', 'user@example.com', '123456789', 'student', 'resources/upload/avatar/student1.jpg');
 
-INSERT INTO users (username, password, full_name, email, phone_number, role)
-VALUES ('student2', MD5('123456a@A'), 'student2', 'user@example.com', '123456789', 'student');
+INSERT INTO users (username, password, full_name, email, phone_number, role, avatar)
+VALUES ('student2', MD5('123456a@A'), 'student2', 'user@example.com', '123456789', 'student', 'resources/upload/avatar/student2.jpeg');
 
-INSERT INTO users (username, password, full_name, email, phone_number, role)
-VALUES ('admin', MD5('admin'), 'admin', 'user@example.com', '123456789', 'admin');
+INSERT INTO users (username, password, full_name, email, phone_number, role, avatar)
+VALUES ('admin', MD5('admin'), 'admin', 'user@example.com', '123456789', 'admin', 'resources/upload/avatar/admin.jpg');
 
 -- create table "Assignments"
 
