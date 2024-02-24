@@ -1,6 +1,9 @@
 # demo
 
-- http://139.59.97.160:8082/
-- https://drive.google.com/file/d/1uZZ5tuJnVOFiGoqp7_2NLuOJfkz6yrTN/view?usp=sharing
-- (tài khoản: teacher1 / 123456a@A ; teacher2 / 123456a@A
-; student1 / 123456a@A ; student2 / 123456a@A).
+- (tài khoản: teacher1 / 123456a@A ; teacher2 / 123456a@A; student1 / 123456a@A ; student2 / 123456a@A).
+- Sử dụng docker compose để cài đặt mã nguồn:
+```bash
+git clone https://github.com/h1bAna/challenge5a.git
+cd challenge5a
+sudo docker compose up -d
+```
